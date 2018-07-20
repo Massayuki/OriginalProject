@@ -1,0 +1,21 @@
+﻿<Properties StartupConfiguration="{5F2A92F8-809A-99C0-7C7B-62FB79FA065A}|">
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.ItemProperties.新米魔王の日本征服 PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/mein/Script/Playing.cs">
+    <Files>
+      <File FileName="Assets/mein/Script/downasdown.cs" Line="10" Column="14" />
+      <File FileName="Assets/mein/Script/PartyScore.cs" Line="9" Column="30" />
+      <File FileName="Assets/mein/Script/HPup.cs" Line="35" Column="29" NotebookId="1" />
+      <File FileName="Assets/mein/Script/Playing.cs" Line="38" Column="1" NotebookId="1" />
+      <File FileName="Assets/mein/Script/BottonManager.cs" Line="14" Column="3" NotebookId="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/takahashimasayuki/Documents/:Users:takahashimasayuki:Desktop:unityprojects:新米魔王の日本征服:Assets:Reset.cs" line="15" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

@@ -1,3 +1,11 @@
+// Upgrade NOTE: commented out 'float4 unity_LightmapST', a built-in variable
+// Upgrade NOTE: commented out 'sampler2D unity_Lightmap', a built-in variable
+// Upgrade NOTE: commented out 'sampler2D unity_LightmapInd', a built-in variable
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+// Upgrade NOTE: replaced tex2D unity_Lightmap with UNITY_SAMPLE_TEX2D
+// Upgrade NOTE: replaced tex2D unity_LightmapInd with UNITY_SAMPLE_TEX2D_SAMPLER
+
 // Shader created with Shader Forge v1.04 
 // Shader Forge (c) Neat Corporation / Joachim Holmer - http://www.acegikmo.com/shaderforge/
 // Note: Manually altering this data may prevent you from opening it in Shader Forge
@@ -49,10 +57,10 @@ Shader "su/su_Zmap_way" {
                 return round(value + dot(pxMult, xVec));
             }
             #ifndef LIGHTMAP_OFF
-                float4 unity_LightmapST;
-                sampler2D unity_Lightmap;
+                // float4 unity_LightmapST;
+                // sampler2D unity_Lightmap;
                 #ifndef DIRLIGHTMAP_OFF
-                    sampler2D unity_LightmapInd;
+                    // sampler2D unity_LightmapInd;
                 #endif
             #endif
             uniform sampler2D _mainTexture; uniform float4 _mainTexture_ST;
@@ -83,12 +91,12 @@ Shader "su/su_Zmap_way" {
                 VertexOutput o = (VertexOutput)0;
                 o.uv0 = v.texcoord0;
                 o.vertexColor = v.vertexColor;
-                o.normalDir = mul(_Object2World, float4(v.normal,0)).xyz;
-                o.tangentDir = normalize( mul( _Object2World, float4( v.tangent.xyz, 0.0 ) ).xyz );
+                o.normalDir = mul(unity_ObjectToWorld, float4(v.normal,0)).xyz;
+                o.tangentDir = normalize( mul( unity_ObjectToWorld, float4( v.tangent.xyz, 0.0 ) ).xyz );
                 o.binormalDir = normalize(cross(o.normalDir, o.tangentDir) * v.tangent.w);
-                o.posWorld = mul(_Object2World, v.vertex);
+                o.posWorld = mul(unity_ObjectToWorld, v.vertex);
                 float3 lightColor = _LightColor0.rgb;
-                o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+                o.pos = UnityObjectToClipPos(v.vertex);
                 o.screenPos = o.pos;
                 #ifndef LIGHTMAP_OFF
                     o.uvLM = v.texcoord1 * unity_LightmapST.xy + unity_LightmapST.zw;
@@ -112,10 +120,10 @@ Shader "su/su_Zmap_way" {
                 float4 _mainTexture_var = tex2D(_mainTexture,TRANSFORM_TEX(i.uv0, _mainTexture));
                 clip( BinaryDither3x3(_mainTexture_var.a - 1.5, sceneUVs) );
                 #ifndef LIGHTMAP_OFF
-                    float4 lmtex = tex2D(unity_Lightmap,i.uvLM);
+                    float4 lmtex = UNITY_SAMPLE_TEX2D(unity_Lightmap,i.uvLM);
                     #ifndef DIRLIGHTMAP_OFF
                         float3 lightmap = DecodeLightmap(lmtex);
-                        float3 scalePerBasisVector = DecodeLightmap(tex2D(unity_LightmapInd,i.uvLM));
+                        float3 scalePerBasisVector = DecodeLightmap(UNITY_SAMPLE_TEX2D_SAMPLER(unity_LightmapInd,unity_Lightmap,i.uvLM));
                         UNITY_DIRBASIS
                         half3 normalInRnmBasis = saturate (mul (unity_DirBasis, float3(0,0,1)));
                         lightmap *= dot (normalInRnmBasis, scalePerBasisVector);
@@ -228,12 +236,12 @@ Shader "su/su_Zmap_way" {
                 VertexOutput o = (VertexOutput)0;
                 o.uv0 = v.texcoord0;
                 o.vertexColor = v.vertexColor;
-                o.normalDir = mul(_Object2World, float4(v.normal,0)).xyz;
-                o.tangentDir = normalize( mul( _Object2World, float4( v.tangent.xyz, 0.0 ) ).xyz );
+                o.normalDir = mul(unity_ObjectToWorld, float4(v.normal,0)).xyz;
+                o.tangentDir = normalize( mul( unity_ObjectToWorld, float4( v.tangent.xyz, 0.0 ) ).xyz );
                 o.binormalDir = normalize(cross(o.normalDir, o.tangentDir) * v.tangent.w);
-                o.posWorld = mul(_Object2World, v.vertex);
+                o.posWorld = mul(unity_ObjectToWorld, v.vertex);
                 float3 lightColor = _LightColor0.rgb;
-                o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+                o.pos = UnityObjectToClipPos(v.vertex);
                 o.screenPos = o.pos;
                 TRANSFER_VERTEX_TO_FRAGMENT(o)
                 return o;
@@ -317,7 +325,7 @@ Shader "su/su_Zmap_way" {
             VertexOutput vert (VertexInput v) {
                 VertexOutput o = (VertexOutput)0;
                 o.uv0 = v.texcoord0;
-                o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+                o.pos = UnityObjectToClipPos(v.vertex);
                 o.screenPos = o.pos;
                 TRANSFER_SHADOW_COLLECTOR(o)
                 return o;
@@ -387,7 +395,7 @@ Shader "su/su_Zmap_way" {
             VertexOutput vert (VertexInput v) {
                 VertexOutput o = (VertexOutput)0;
                 o.uv0 = v.texcoord0;
-                o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+                o.pos = UnityObjectToClipPos(v.vertex);
                 o.screenPos = o.pos;
                 TRANSFER_SHADOW_CASTER(o)
                 return o;
